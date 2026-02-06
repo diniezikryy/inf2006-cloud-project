@@ -1,6 +1,6 @@
-# COE Seasonality (FastAPI + SQLite)
+# COE Analytics (FastAPI + React)
 
-Small proof-of-concept for exploring COE seasonality by vehicle category, year range, and aggregation (mean/median). Data is stored in SQLite and queried via FastAPI.
+Interactive dashboard for COE seasonality, analysis, and premium tracking. The backend is FastAPI with SQLite, and the frontend is a React app (Vite).
 
 ## Prerequisites
 
@@ -11,18 +11,26 @@ Small proof-of-concept for exploring COE seasonality by vehicle category, year r
 1) Create the database from the CSV:
 
 ```sh
-python db/init_db.py
+python backend/db/init_db.py
 ```
 
 2) Run the API server:
 
 ```sh
-uvicorn main:app --reload
+python -m uvicorn backend.main:app --reload
+```
+
+3) Run the React frontend (new terminal):
+
+```sh
+cd frontend
+npm install
+npm run dev
 ```
 
 ## API
 
-- `GET /seasonality`
+- `GET /api/seasonality`
   - Query params:
     - `vehicle_class` (e.g. `Category A`)
     - `start_year` (e.g. `2010`)
@@ -32,12 +40,22 @@ uvicorn main:app --reload
 Example:
 
 ```sh
-curl "http://127.0.0.1:8000/seasonality?vehicle_class=Category%20A&start_year=2010&end_year=2019&aggregation=mean"
+curl "http://127.0.0.1:8000/api/seasonality?vehicle_class=Category%20A&start_year=2010&end_year=2019&aggregation=mean"
 ```
 
-## Optional UI
+- `GET /api/analysis`
+- `GET /api/premium`
 
-If you add a simple `static/index.html` and serve it from FastAPI, open:
+## Frontend build
+
+To serve the React build from FastAPI:
+
+```sh
+cd frontend
+npm run build
+```
+
+Then open:
 
 ```
 http://127.0.0.1:8000/
